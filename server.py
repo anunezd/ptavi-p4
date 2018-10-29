@@ -8,28 +8,28 @@ import socketserver
 import sys
 
 
-class EchoHandler(socketserver.DatagramRequestHandler):
-    """
-    Echo server class
-    """
+class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
+
+
+    dicc = {}
     def handle(self):
-        """
-        handle method of the server class
-        (all requests will be handled by this method)
-        """
-        self.wfile.write(b"Hemos recibido tu peticion")
-        print (self.client_address)
-        for line in self.rfile:
-            print("El cliente nos manda ", line.decode('utf-8'))
+        line = self.rfile.read()
+        doc = line.decode('utf-8').split(" ")
+        IP = self.client_address[0]
+        PORT = self.client_address[1]
+        if doc[0] == 'REGISTER':
+            user = doc[2]
+            address = str(ip) + ":" + str(port)
+            self.dicc[user] = ('address: ' + address)
+            print(self.dicc)
+            self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
 
 if __name__ == "__main__":
-    # Listens at localhost ('') port 6001
-    # and calls the EchoHandler class to manage the request
-    LISTEN_PORT = int(sys.argv[1])
-    serv = socketserver.UDPServer(('', LISTEN_PORT), EchoHandler)
+    PORT = int(sys.argv[1])
+    serv = socketserver.UDPServer(('', PORT), SIPRegisterHandler)
 
-    print("Lanzando servidor UDP de eco...")
+    print("Lanzando servidor UDP de eco...\n")
     try:
         serv.serve_forever()
     except KeyboardInterrupt:
