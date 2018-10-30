@@ -40,9 +40,9 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             print(self.dicc)
             self.register2json()
 
-        def register2json(self):
-            with open('registered.json', 'w') as outfile_json:
-                json.dump(self.dicc, outfile_json, indent=3)
+    def register2json(self):
+        with open('registered.json', 'w') as outfile_json:
+            json.dump(self.dicc, outfile_json, indent=3)
 
 if __name__ == "__main__":
     try:
