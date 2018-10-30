@@ -4,10 +4,9 @@
 Clase (y programa principal) para un servidor de eco en UDP simple
 """
 
-import socketserver
 import sys
 import json
-
+import socketserver
 from datetime import datetime, date, time, timedelta
 
 FORMATO = '%Y-%m-%d %H:%M:%S'
@@ -39,7 +38,11 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
             for user in lista:
                 del self.dicc[user]
             print(self.dicc)
-            #self.register2json()
+            self.register2json()
+
+        def register2json(self):
+            with open('registered.json', 'w') as outfile_json:
+                json.dump(self.dicc, outfile_json, indent=3)
 
 if __name__ == "__main__":
     try:
