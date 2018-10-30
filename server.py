@@ -12,10 +12,12 @@ from datetime import datetime, date, time, timedelta
 
 FORMATO = '%Y-%m-%d %H:%M:%S'
 
+
 class SIPRegisterHandler(socketserver.DatagramRequestHandler):
 
     dicc = {}
     lista = []
+
     def handle(self):
         self.json2registered()
         line = self.rfile.read()
@@ -36,7 +38,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 expired = tiempo + timedelta(seconds=int(expires))
                 address = str(ip) + ":" + str(port)
                 fecha = expired.strftime(FORMATO)
-                self.dicc[user] = {'Address ' : address, 'Expires' : fecha}
+                self.dicc[user] = {'Address ': address, 'Expires': fecha}
                 self.wfile.write(b"SIP/2.0 200 OK\r\n\r\n")
             lista = []
             now = datetime.now()
@@ -59,6 +61,7 @@ class SIPRegisterHandler(socketserver.DatagramRequestHandler):
                 self.dicc = json.load(outfile_json)
         except:
             pass
+
 
 if __name__ == "__main__":
     try:
